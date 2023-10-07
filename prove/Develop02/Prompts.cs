@@ -8,7 +8,7 @@ public static class PromptGenerator
         "How did I see the hand of the Lord in my life today?",
         "What was the strongest emotion I felt today?",
         "If I had one thing I could do over today, what would it be?",
-        // Other journal prompts! :)
+        // Other journal prompts
         "What made you happy today?",
         "Describe a challenging situation you faced today and how you handled it.",
         "Write about a person you interacted with today and the impact they had on you.",
