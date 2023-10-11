@@ -21,8 +21,10 @@ class Program
             if (choice == "1") 
             {
                 string prompt = PromptGenerator.GetRandomPrompt();
-                Console.WriteLine("Prompt: " + prompt);
+                Console.WriteLine($"Prompt: {prompt}");
+
                 string response = GetUserResponse();
+
                 Entry newEntry = new Entry(prompt, response, DateTime.Now.ToString());
                 journal.AddEntry(newEntry);
             }
