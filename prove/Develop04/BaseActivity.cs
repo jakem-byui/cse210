@@ -36,7 +36,7 @@ public class BaseActivity
             foreach (var c in spinnerChars)
             {
                 Console.Write(c + "\r");
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
             }
         }
 
