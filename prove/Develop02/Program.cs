@@ -1,4 +1,4 @@
-class Program
+class ProgramD2
 {
     static void Main(string[] args)
     {
