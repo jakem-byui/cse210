@@ -164,7 +164,7 @@ class Program
     static void LoadingBar()
     {
         Console.Clear();
-        
+
         Console.WriteLine("| Loading |");
         string[] spinnerChars = { "|~        |", "|~~~      |", "|~~~~~    |", "|~~~~~~~  |", "|~~~~~~~~~|" };
         int iterations = 1;
@@ -174,7 +174,7 @@ class Program
             foreach (var c in spinnerChars)
             {
                 Console.Write(c + "\r");
-                System.Threading.Thread.Sleep(250);
+                Thread.Sleep(250);
             }
         }
         
