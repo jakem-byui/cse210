@@ -26,6 +26,7 @@ class ChecklistGoal : Goal
     {
         Console.WriteLine($"[{_completedCount}/{_targetCount}] {_name}");
     }
+
     public int TargetCount
     {
         get { return _targetCount; }

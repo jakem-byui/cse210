@@ -10,7 +10,6 @@ class EternalGoal : Goal
     {
         Console.WriteLine($"\n{_name} recorded! You gained {_points} points.");
         Console.WriteLine($"Here's how you defined your goal: {_description}");
-        
     }
 
     public override void DisplayProgress()

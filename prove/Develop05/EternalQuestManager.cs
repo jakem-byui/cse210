@@ -1,25 +1,25 @@
 class EternalQuestManager
 {
-    private List<Goal> goals;
-    private int totalScore;
+    private List<Goal> _goals;
+    private int _totalScore;
 
     public EternalQuestManager()
     {
-        goals = new List<Goal>();
-        totalScore = 0;
+        _goals = new List<Goal>();
+        _totalScore = 0;
     }
 
     public void AddGoal(Goal goal)
     {
-        goals.Add(goal);
+        _goals.Add(goal);
     }
 
     public void RecordEvent(int goalIndex)
     {
-        if (goalIndex >= 0 && goalIndex < goals.Count)
+        if (goalIndex >= 0 && goalIndex < _goals.Count)
         {
-            goals[goalIndex].RecordEvent();
-            totalScore += goals[goalIndex].Points;
+            _goals[goalIndex].RecordEvent();
+            _totalScore += _goals[goalIndex].Points;
         }
         else
         {
@@ -30,13 +30,13 @@ class EternalQuestManager
     public void DisplayGoals()
     {
         Console.WriteLine("\nEternal Quest Goals:");
-        for (int i = 0; i < goals.Count; i++)
+        for (int i = 0; i < _goals.Count; i++)
         {
             Console.Write($"{i}. ");
-            goals[i].DisplayProgress();
+            _goals[i].DisplayProgress();
         }
 
-        Console.WriteLine($"Total Score: {totalScore} points");
+        Console.WriteLine($"Total Score: {_totalScore} points");
     }
 
     public void SaveProgress(string fileName)
@@ -45,7 +45,7 @@ class EternalQuestManager
         {
             using (StreamWriter writer = new StreamWriter(fileName))
             {
-                foreach (Goal goal in goals)
+                foreach (Goal goal in _goals)
                 {
                     if (goal is ChecklistGoal checklistGoal)
                     {
@@ -56,7 +56,7 @@ class EternalQuestManager
                         writer.WriteLine($"{goal.GetType().Name}:{goal.Name},{goal.Points},{goal.Description}");
                     }
                 }
-                writer.WriteLine($"Total Score:{totalScore}");
+                writer.WriteLine($"Total Score:{_totalScore}");
             }
 
             Console.WriteLine("Progress saved successfully.");
@@ -80,7 +80,7 @@ class EternalQuestManager
                 {
                     // Extract total score from the last line
                     int totalScoreIndex = line.IndexOf(':') + 1;
-                    manager.totalScore = int.Parse(line.Substring(totalScoreIndex).Trim());
+                    manager._totalScore = int.Parse(line.Substring(totalScoreIndex).Trim());
                 }
                 else
                 {

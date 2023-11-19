@@ -1,6 +1,6 @@
 using System;
 
-class ProgramD5
+class Program
 {
     static void Main()
     {
@@ -25,10 +25,8 @@ class ProgramD5
 
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
-                Console.Clear();
                 LoadingBar();
-                Console.Clear();
-                
+
                 switch (choice)
                 {
                     case 1:
@@ -90,18 +88,18 @@ class ProgramD5
         if (int.TryParse(Console.ReadLine(), out int choice))
         {
             Console.Write("Enter the name of the goal: ");
-            string _goalName = Console.ReadLine();
+            string goalName = Console.ReadLine();
 
             Console.Write("Enter a description for the goal: ");
-            string _goalDescription = Console.ReadLine();
+            string goalDescription = Console.ReadLine();
 
             switch (choice)
             {
                 case 1:
                     Console.Write("Enter the points for completing the goal: ");
-                    if (int.TryParse(Console.ReadLine(), out int _simplePoints))
+                    if (int.TryParse(Console.ReadLine(), out int simplePoints))
                     {
-                        manager.AddGoal(new SimpleGoal(_goalName, _goalDescription, _simplePoints));
+                        manager.AddGoal(new SimpleGoal(goalName, goalDescription, simplePoints));
                         Console.WriteLine("Simple Goal created successfully.");
                     }
                     else
@@ -112,9 +110,9 @@ class ProgramD5
 
                 case 2:
                     Console.Write("Enter the points for each event: ");
-                    if (int.TryParse(Console.ReadLine(), out int _eternalPoints))
+                    if (int.TryParse(Console.ReadLine(), out int eternalPoints))
                     {
-                        manager.AddGoal(new EternalGoal(_goalName, _eternalPoints, _goalDescription));
+                        manager.AddGoal(new EternalGoal(goalName, eternalPoints, goalDescription));
                         Console.WriteLine("Eternal Goal created successfully.");
                     }
                     else
@@ -125,15 +123,15 @@ class ProgramD5
 
                 case 3:
                     Console.Write("Enter the points for each event: ");
-                    if (int.TryParse(Console.ReadLine(), out int _checklistPoints))
+                    if (int.TryParse(Console.ReadLine(), out int checklistPoints))
                     {
                         Console.Write("Enter the target count for the checklist: ");
-                        if (int.TryParse(Console.ReadLine(), out int _targetCount))
+                        if (int.TryParse(Console.ReadLine(), out int targetCount))
                         {
                             Console.Write("Enter the completed count for the checklist: ");
-                            if (int.TryParse(Console.ReadLine(), out int _completedCount))
+                            if (int.TryParse(Console.ReadLine(), out int completedCount))
                             {
-                                manager.AddGoal(new ChecklistGoal(_goalName, _checklistPoints, _targetCount, _completedCount));
+                                manager.AddGoal(new ChecklistGoal(goalName, checklistPoints, targetCount, completedCount));
                                 Console.WriteLine("Checklist Goal created successfully.");
                             }
                             else
@@ -165,7 +163,10 @@ class ProgramD5
 
     static void LoadingBar()
     {
-        string[] spinnerChars = { "|        |","|~~      |", "|~~~~    |", "|~~~~~~  |", "|~~~~~~~~|" };
+        Console.Clear();
+        
+        Console.WriteLine("| Loading |");
+        string[] spinnerChars = { "|~        |", "|~~~      |", "|~~~~~    |", "|~~~~~~~  |", "|~~~~~~~~~|" };
         int iterations = 1;
 
         for (int i = 0; i < iterations; i++)
@@ -173,10 +174,11 @@ class ProgramD5
             foreach (var c in spinnerChars)
             {
                 Console.Write(c + "\r");
-                Thread.Sleep(250);
+                System.Threading.Thread.Sleep(250);
             }
         }
-
+        
+        Console.Clear();
         Console.WriteLine(); // Move to the next line after the spinner
     }
 }
