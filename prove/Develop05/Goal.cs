@@ -1,22 +1,29 @@
 abstract class Goal
 {
-    protected string name;
-    protected int points;
+    protected string _name;
+    protected int _points;
+    protected string _description;
 
     public Goal(string name)
     {
-        this.name = name;
-        points = 0;
+        _name = name;
+        _points = 0;
+        _description = "";
     }
 
     public string Name
     {
-        get { return name; }
+        get { return _name; }
+    }
+
+    public string Description
+    {
+        get { return _description; }
     }
 
     public int Points
     {
-        get { return points; }
+        get { return _points; }
     }
 
     public abstract void RecordEvent();

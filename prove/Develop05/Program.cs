@@ -6,9 +6,8 @@ class ProgramD5
     {
         // Create manager and add some initial goals
         EternalQuestManager manager = new EternalQuestManager();
-        manager.AddGoal(new SimpleGoal("Run a marathon", 1000));
-        manager.AddGoal(new EternalGoal("Read scriptures", 100));
-        manager.AddGoal(new ChecklistGoal("Attend the temple", 50, 10));
+
+        Console.Clear();
 
         bool quit = false;
 
@@ -22,10 +21,14 @@ class ProgramD5
             Console.WriteLine("5. Record Event");
             Console.WriteLine("6. Quit");
 
-            Console.Write("Select a choice from the menu: ");
+            Console.Write("\nSelect a choice from the menu: ");
 
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
+                Console.Clear();
+                LoadingBar();
+                Console.Clear();
+                
                 switch (choice)
                 {
                     case 1:
@@ -37,16 +40,16 @@ class ProgramD5
                         break;
 
                     case 3:
-                        // Console.Write("Enter the file name to save: ");
-                        // string saveFileName = Console.ReadLine();
-                        // manager.SaveProgress(saveFileName);
-                        // break;
+                        Console.Write("Enter the file name to save: ");
+                        string saveFileName = Console.ReadLine();
+                        manager.SaveProgress(saveFileName);
+                        break;
 
                     case 4:
-                        // Console.Write("Enter the file name to load: ");
-                        // string loadFileName = Console.ReadLine();
-                        // manager = EternalQuestManager.LoadProgress(loadFileName);
-                        // break;
+                        Console.Write("Enter the file name to load: ");
+                        string loadFileName = Console.ReadLine();
+                        manager = EternalQuestManager.LoadProgress(loadFileName);
+                        break;
 
                     case 5:
                         Console.Write("Enter the index of the goal to record an event: ");
@@ -87,15 +90,18 @@ class ProgramD5
         if (int.TryParse(Console.ReadLine(), out int choice))
         {
             Console.Write("Enter the name of the goal: ");
-            string goalName = Console.ReadLine();
+            string _goalName = Console.ReadLine();
+
+            Console.Write("Enter a description for the goal: ");
+            string _goalDescription = Console.ReadLine();
 
             switch (choice)
             {
                 case 1:
                     Console.Write("Enter the points for completing the goal: ");
-                    if (int.TryParse(Console.ReadLine(), out int simplePoints))
+                    if (int.TryParse(Console.ReadLine(), out int _simplePoints))
                     {
-                        manager.AddGoal(new SimpleGoal(goalName, simplePoints));
+                        manager.AddGoal(new SimpleGoal(_goalName, _goalDescription, _simplePoints));
                         Console.WriteLine("Simple Goal created successfully.");
                     }
                     else
@@ -106,9 +112,9 @@ class ProgramD5
 
                 case 2:
                     Console.Write("Enter the points for each event: ");
-                    if (int.TryParse(Console.ReadLine(), out int eternalPoints))
+                    if (int.TryParse(Console.ReadLine(), out int _eternalPoints))
                     {
-                        manager.AddGoal(new EternalGoal(goalName, eternalPoints));
+                        manager.AddGoal(new EternalGoal(_goalName, _eternalPoints, _goalDescription));
                         Console.WriteLine("Eternal Goal created successfully.");
                     }
                     else
@@ -119,13 +125,21 @@ class ProgramD5
 
                 case 3:
                     Console.Write("Enter the points for each event: ");
-                    if (int.TryParse(Console.ReadLine(), out int checklistPoints))
+                    if (int.TryParse(Console.ReadLine(), out int _checklistPoints))
                     {
                         Console.Write("Enter the target count for the checklist: ");
-                        if (int.TryParse(Console.ReadLine(), out int targetCount))
+                        if (int.TryParse(Console.ReadLine(), out int _targetCount))
                         {
-                            manager.AddGoal(new ChecklistGoal(goalName, checklistPoints, targetCount));
-                            Console.WriteLine("Checklist Goal created successfully.");
+                            Console.Write("Enter the completed count for the checklist: ");
+                            if (int.TryParse(Console.ReadLine(), out int _completedCount))
+                            {
+                                manager.AddGoal(new ChecklistGoal(_goalName, _checklistPoints, _targetCount, _completedCount));
+                                Console.WriteLine("Checklist Goal created successfully.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number for the completed count.");
+                            }
                         }
                         else
                         {
@@ -147,5 +161,22 @@ class ProgramD5
         {
             Console.WriteLine("Invalid input. Please enter a number.");
         }
+    }
+
+    static void LoadingBar()
+    {
+        string[] spinnerChars = { "|        |","|~~      |", "|~~~~    |", "|~~~~~~  |", "|~~~~~~~~|" };
+        int iterations = 1;
+
+        for (int i = 0; i < iterations; i++)
+        {
+            foreach (var c in spinnerChars)
+            {
+                Console.Write(c + "\r");
+                Thread.Sleep(250);
+            }
+        }
+
+        Console.WriteLine(); // Move to the next line after the spinner
     }
 }

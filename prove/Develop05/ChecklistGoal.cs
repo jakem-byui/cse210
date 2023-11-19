@@ -1,29 +1,38 @@
 class ChecklistGoal : Goal
 {
-    private int targetCount;
-    private int completedCount;
+    private int _targetCount;
+    private int _completedCount;
 
-    public ChecklistGoal(string name, int pointsPerEvent, int targetCount) : base(name)
+    public ChecklistGoal(string name, int points, int targetCount, int completedCount) : base(name)
     {
-        this.points = pointsPerEvent;
-        this.targetCount = targetCount;
-        completedCount = 0;
+        _points = points;
+        _targetCount = targetCount;
+        _completedCount = completedCount;
     }
 
     public override void RecordEvent()
     {
-        completedCount++;
-        Console.WriteLine($"{name} completed! You gained {points} points.");
+        _completedCount++;
+        Console.WriteLine($"\n{_name} completed! You gained {_points} points.");
 
-        if (completedCount == targetCount)
+        if (_completedCount == _targetCount)
         {
-            points += 500; // Bonus points for completing the checklist
-            Console.WriteLine($"Bonus! Goal {name} completed {completedCount}/{targetCount} times. You gained an additional 500 points.");
+            _points += 500; // Bonus points for completing the checklist
+            Console.WriteLine($"Bonus! Goal {_name} completed {_completedCount}/{_targetCount} times. You gained an additional 500 points.");
         }
     }
 
     public override void DisplayProgress()
     {
-        Console.WriteLine($"[{completedCount}/{targetCount}] {name}");
+        Console.WriteLine($"[{_completedCount}/{_targetCount}] {_name}");
+    }
+    public int TargetCount
+    {
+        get { return _targetCount; }
+    }
+
+    public int CompletedCount
+    {
+        get { return _completedCount; }
     }
 }

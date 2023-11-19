@@ -1,0 +1,4 @@
+SimpleGoal:run,15,run around
+SimpleGoal:walk,5,walk around
+EternalGoal:read scriptures,25,daily book of mormon study
+Total Score:15

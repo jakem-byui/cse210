@@ -1,17 +1,20 @@
 class EternalGoal : Goal
 {
-    public EternalGoal(string name, int pointsPerEvent) : base(name)
+    public EternalGoal(string name, int points, string description) : base(name)
     {
-        this.points = pointsPerEvent;
+        _points = points;
+        _description = description;
     }
 
     public override void RecordEvent()
     {
-        Console.WriteLine($"{name} recorded! You gained {points} points.");
+        Console.WriteLine($"\n{_name} recorded! You gained {_points} points.");
+        Console.WriteLine($"Here's how you defined your goal: {_description}");
+        
     }
 
     public override void DisplayProgress()
     {
-        Console.WriteLine($"[{(points > 0 ? 'X' : ' ')}] {name}");
+        Console.WriteLine($"[{(_points > 0 ? ' ' : 'X')}] {_name}");
     }
 }
