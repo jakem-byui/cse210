@@ -21,10 +21,14 @@ public class Bulbasaur : Pokemon
     {
         Console.WriteLine($"{Name} uses Vine Whip on {opponent.Name}!");
 
+        Thread.Sleep(500);
+
         int damage = CalculateDamage(opponent) + 8; // Vine Whip adds extra damage
 
         opponent.TakeDamage(damage);
 
         Console.WriteLine($"{opponent.Name} takes {damage} damage. {opponent.Name}'s health: {opponent.Health}");
+
+        Thread.Sleep(500);
     }
 }

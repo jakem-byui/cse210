@@ -32,7 +32,7 @@ public class Pokemon
     {
         Console.WriteLine($"{_name} attacks {opponent.Name}!");
 
-        Thread.Sleep(3000);
+        Thread.Sleep(500);
 
         // Calculate damage considering type effectiveness
         int damage = CalculateDamage(opponent);
@@ -40,7 +40,7 @@ public class Pokemon
 
         Console.WriteLine($"{opponent.Name} takes {damage} damage. {opponent.Name}'s health: {opponent.Health}");
 
-        Thread.Sleep(3000);
+        Thread.Sleep(500);
     }
 
     // Method for calculating damage with type effectiveness

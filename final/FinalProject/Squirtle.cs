@@ -21,10 +21,14 @@ public class Squirtle : Pokemon
     {
         Console.WriteLine($"{Name} uses Water Gun on {opponent.Name}!");
 
+        Thread.Sleep(500);
+
         int damage = CalculateDamage(opponent) + 5; // Water Gun adds extra damage
 
         opponent.TakeDamage(damage);
 
         Console.WriteLine($"{opponent.Name} takes {damage} damage. {opponent.Name}'s health: {opponent.Health}");
+
+        Thread.Sleep(500);
     }
 }

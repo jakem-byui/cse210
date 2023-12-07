@@ -1,94 +1,49 @@
 using System;
+using System.Threading;
 
 class ProgramFinal
 {
     static void Main()
     {
-        // Let the user choose a Pokemon
-        Console.WriteLine("Choose your Pokemon: 1 - Charmander, 2 - Squirtle, 3 - Bulbasaur");
-        int choice = int.Parse(Console.ReadLine());
+        int menuChoice;
 
-        Pokemon userPokemon;
+        Console.WriteLine("Welcome to Pokémon C#!");
+        Thread.Sleep(500);
 
-        switch (choice)
+        Console.WriteLine("\nCurrently there's two minigames you can play: 'Battle Manager' and 'Safari Zone'.");
+        Thread.Sleep(500);
+
+        do
         {
-            case 1:
-                userPokemon = new Charmander();
-                break;
-            case 2:
-                userPokemon = new Squirtle();
-                break;
-            case 3:
-                userPokemon = new Bulbasaur();
-                break;
-            default:
-                Console.WriteLine("Invalid choice. Defaulting to Charmander.");
-                userPokemon = new Charmander();
-                break;
-        }
-
-        // Create a default opponent
-        Pokemon opponentPokemon = new Charmander();
-
-        // Let the battle begin
-        Console.WriteLine("Battle Start!");
-        Console.WriteLine($"{userPokemon.Name} vs. {opponentPokemon.Name}");
-
-        // Battle loop
-        while (userPokemon.Health > 0 && opponentPokemon.Health > 0)
-        {
-            // User's turn
-            Console.WriteLine("\nYour turn!");
-
-            Thread.Sleep(1500);
-
-            userPokemon.Attack(opponentPokemon);
-
-            BattlePace();
-
-            // Check if opponent fainted
-            if (opponentPokemon.Health <= 0)
-            {
-                Console.WriteLine($"{opponentPokemon.Name} fainted. You win!");
-                break;
-            }
-
-            // Opponent's turn
-            Console.WriteLine("\nOpponent's turn!");
-
-            Thread.Sleep(1500);
-
-            opponentPokemon.Attack(userPokemon);
+            Console.WriteLine("\nMain Menu:");
+            Console.WriteLine("1. Launch Battle Manager");
+            Console.WriteLine("2. Launch Safari Zone");
+            Console.WriteLine("3. Exit Program");
+            Console.Write("Enter your choice: ");
             
-            BattlePace();
-
-            // Check if user fainted
-            if (userPokemon.Health <= 0)
+            if (int.TryParse(Console.ReadLine(), out menuChoice))
             {
-                Console.WriteLine($"{userPokemon.Name} fainted. You lose!");
-                break;
+                switch (menuChoice)
+                {
+                    case 1:
+                        BattleManager.StartBattle();
+                        break;
+                    case 2:
+                        // Your code for option 2 (To be determined)
+                        break;
+                    case 3:
+                        Console.WriteLine("Exiting program. Goodbye!");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
             }
-        }
-
-        // End of the battle
-        Console.WriteLine("Battle Over!");
-    }
-
-        static void BattlePace()
-    {
-        
-        string[] spinnerChars = {".","..","...","...."};
-        int iterations = 1;
-
-        for (int i = 0; i < iterations; i++)
-        {
-            foreach (var c in spinnerChars)
+            else
             {
-                Console.Write(c + "\r");
-                Thread.Sleep(300);
+                Console.WriteLine("Invalid input. Please enter a number.");
             }
-        }
-        
-        Console.WriteLine(); // Move to the next line after the spinner
+
+        } while (menuChoice != 3);
     }
 }
