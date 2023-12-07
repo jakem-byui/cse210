@@ -1,66 +1,94 @@
-using System.Net.Http.Json;
+using System;
 
 class ProgramFinal
 {
-    private static readonly HttpClient httpClient = new HttpClient();
-    
-    static async Task Main()
+    static void Main()
     {
-        bool exitProgram = false;
+        // Let the user choose a Pokemon
+        Console.WriteLine("Choose your Pokemon: 1 - Charmander, 2 - Squirtle, 3 - Bulbasaur");
+        int choice = int.Parse(Console.ReadLine());
 
-        while (!exitProgram)
+        Pokemon userPokemon;
+
+        switch (choice)
         {
-            Console.WriteLine("Main Menu:");
-            Console.WriteLine("1. Start a battle");
-            Console.WriteLine("2. Exit Program");
-            Console.Write("Enter your choice: ");
+            case 1:
+                userPokemon = new Charmander();
+                break;
+            case 2:
+                userPokemon = new Squirtle();
+                break;
+            case 3:
+                userPokemon = new Bulbasaur();
+                break;
+            default:
+                Console.WriteLine("Invalid choice. Defaulting to Charmander.");
+                userPokemon = new Charmander();
+                break;
+        }
 
-            string choice = Console.ReadLine();
+        // Create a default opponent
+        Pokemon opponentPokemon = new Charmander();
 
-            switch (choice)
+        // Let the battle begin
+        Console.WriteLine("Battle Start!");
+        Console.WriteLine($"{userPokemon.Name} vs. {opponentPokemon.Name}");
+
+        // Battle loop
+        while (userPokemon.Health > 0 && opponentPokemon.Health > 0)
+        {
+            // User's turn
+            Console.WriteLine("\nYour turn!");
+
+            Thread.Sleep(1500);
+
+            userPokemon.Attack(opponentPokemon);
+
+            BattlePace();
+
+            // Check if opponent fainted
+            if (opponentPokemon.Health <= 0)
             {
-                case "1":
-                    await StartBattleAsync();
-                    break;
-
-                case "2":
-                    exitProgram = true;
-                    break;
-
-                default:
-                    Console.WriteLine("Invalid choice. Please enter a valid option.");
-                    break;
+                Console.WriteLine($"{opponentPokemon.Name} fainted. You win!");
+                break;
             }
 
-            Console.WriteLine(); // Add a line break for better readability
+            // Opponent's turn
+            Console.WriteLine("\nOpponent's turn!");
+
+            Thread.Sleep(1500);
+
+            opponentPokemon.Attack(userPokemon);
+            
+            BattlePace();
+
+            // Check if user fainted
+            if (userPokemon.Health <= 0)
+            {
+                Console.WriteLine($"{userPokemon.Name} fainted. You lose!");
+                break;
+            }
         }
+
+        // End of the battle
+        Console.WriteLine("Battle Over!");
     }
 
-    static async Task StartBattleAsync()
+        static void BattlePace()
     {
-        // Fetch Pokémon data from the API
-        Pokemon pikachu = await GetPokemonAsync("pikachu");
-        Pokemon charmander = await GetPokemonAsync("charmander");
+        
+        string[] spinnerChars = {".","..","...","...."};
+        int iterations = 1;
 
-        // The battle logic from the previous example can be placed here
-        Console.WriteLine("Starting a battle...");
-        // You can copy and paste the battle logic code here
-    }
-
-    static async Task<Pokemon> GetPokemonAsync(string pokemonName)
-    {
-        string apiUrl = $"https://pokeapi.co/api/v2/pokemon/{pokemonName.ToLower()}";
-        HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-        if (response.IsSuccessStatusCode)
+        for (int i = 0; i < iterations; i++)
         {
-            var pokemonData = await response.Content.ReadFromJsonAsync<PokemonApiResponse>();
-            return new Pokemon(pokemonData.Name, pokemonData.Stats[5].base_stat, 20); // Assuming the 6th stat is HP
+            foreach (var c in spinnerChars)
+            {
+                Console.Write(c + "\r");
+                Thread.Sleep(300);
+            }
         }
-        else
-        {
-            Console.WriteLine($"Failed to fetch Pokémon data for {pokemonName}.");
-            return null;
-        }
+        
+        Console.WriteLine(); // Move to the next line after the spinner
     }
 }
