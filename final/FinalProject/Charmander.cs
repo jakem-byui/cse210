@@ -2,6 +2,8 @@ public class Charmander : Pokemon
 {
     public Charmander() : base("Charmander", 100, 25, PokemonType.Fire)
     {
+        // Add specific moves for Charmander
+        _moves.Add("Ember");
     }
 
     public override void Attack(Pokemon opponent)

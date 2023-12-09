@@ -2,6 +2,8 @@ public class Squirtle : Pokemon
 {
     public Squirtle() : base("Squirtle", 120, 20, PokemonType.Water)
     {
+        // Add specific moves for Squirtle
+        _moves.Add("Water Gun");
     }
 
     public override void Attack(Pokemon opponent)

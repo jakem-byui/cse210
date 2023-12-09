@@ -2,6 +2,8 @@ public class Bulbasaur : Pokemon
 {
     public Bulbasaur() : base("Bulbasaur", 110, 15, PokemonType.Grass)
     {
+        // Add specific moves for Bulbasaur
+        _moves.Add("Vine Whip");
     }
 
     public override void Attack(Pokemon opponent)

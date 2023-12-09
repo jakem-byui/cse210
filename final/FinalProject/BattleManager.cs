@@ -2,6 +2,10 @@ class BattleManager
 {
     public static void StartBattle()
     {
+        // Clear screen
+        Console.Clear();
+        int choice;
+        
         // Create a random opponent
         Pokemon opponentPokemon = GetRandomOpponent();
         
@@ -14,76 +18,103 @@ class BattleManager
 
         Console.WriteLine("\nChoose your Pokémon:");
         Console.WriteLine("1 - Charmander, Lizard Pokémon");
-        Console.WriteLine("2 - Squirtle, Seed Pokémon");
-        Console.WriteLine("3 - Bulbasaur, Tiny Turtle Pokémon");
+        Console.WriteLine("2 - Squirtle, Tiny Turtle Pokémon");
+        Console.WriteLine("3 - Bulbasaur, Seed Pokémon");
 
         Console.Write("\nYou choose: ");
-        int choice = int.Parse(Console.ReadLine());
 
-        Pokemon userPokemon;
+        Pokemon userPokemon = new Charmander();  // Default value
 
-        switch (choice)
+        if (int.TryParse(Console.ReadLine(), out choice))
         {
-            case 1:
-                userPokemon = new Charmander();
-                break;
-            case 2:
-                userPokemon = new Squirtle();
-                break;
-            case 3:
-                userPokemon = new Bulbasaur();
-                break;
-            default:
-                Console.WriteLine("Invalid choice. Defaulting to Charmander.");
-                userPokemon = new Charmander();
-                break;
+            switch (choice)
+            {
+                case 1:
+                    userPokemon = new Charmander();
+                    break;
+                case 2:
+                    userPokemon = new Squirtle();
+                    break;
+                case 3:
+                    userPokemon = new Bulbasaur();
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Defaulting to Charmander.");
+                    // No need to assign a value here because userPokemon already has a default value.
+                    break;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please enter a number.");
         }
 
         // Let the battle begin
         Console.WriteLine("Battle Start!");
-        Console.WriteLine($"{userPokemon.Name} vs. {opponentPokemon.Name}");
+        Console.WriteLine($"{userPokemon.Name} vs. {opponentPokemon.Name}. It's your move!");
+        Console.WriteLine();
 
         // Battle loop
         while (userPokemon.Health > 0 && opponentPokemon.Health > 0)
         {
             // User's turn
-            Console.WriteLine("\nYour turn!");
+            Console.ForegroundColor = ConsoleColor.Green;
+            // Display available moves
+            userPokemon.DisplayMoves();
 
-            Thread.Sleep(1500);
-
-            userPokemon.Attack(opponentPokemon);
-
-            BattlePace();
-
-            // Check if opponent fainted
-            if (opponentPokemon.Health <= 0)
+            // User's turn
+            Console.Write("Choose a move (enter the corresponding number): ");
+            if (int.TryParse(Console.ReadLine(), out int moveChoice))
             {
-                Console.WriteLine($"{opponentPokemon.Name} fainted. You win!");
-                break;
+                userPokemon.AttackWithMove(opponentPokemon, moveChoice - 1);
+
+                // Check if opponent fainted
+                if (opponentPokemon.Health <= 0)
+                {
+                    Console.WriteLine($"Your opponent's {opponentPokemon.Name} fainted. You win!");
+                    break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a number.");
             }
 
-            // Opponent's turn
-            Console.WriteLine("\nOpponent's turn!");
-
             Thread.Sleep(1500);
 
-            opponentPokemon.Attack(userPokemon);
-            
-            BattlePace();
-
-            // Check if user fainted
-            if (userPokemon.Health <= 0)
+            // Check if opponent's health is still greater than zero before executing the opponent's turn
+            if (opponentPokemon.Health > 0)
             {
-                Console.WriteLine($"{userPokemon.Name} fainted. You lose!");
-                break;
+                // Opponent's turn
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Opponent's turn!");
+
+                Thread.Sleep(1500);
+
+                opponentPokemon.Attack(userPokemon);
+
+                BattlePace();
+
+                // Check if user fainted
+                if (userPokemon.Health <= 0)
+                {
+                    Console.WriteLine($"Your {userPokemon.Name} fainted. You lose!");
+                    break;
+                }
             }
         }
 
         // End of the battle
-        Console.WriteLine("Battle Over!");
+        Console.ResetColor();
+
+        Console.WriteLine("Battle Over! Press 'Enter' to continue.");
+
+        Console.ReadLine();
+
+        Console.Clear();
     }
 
-        static void BattlePace()
+    static void BattlePace()
     {
         
         string[] spinnerChars = {".","..","..."};
