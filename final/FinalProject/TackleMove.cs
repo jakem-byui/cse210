@@ -1,12 +1,12 @@
-class VineWhipMove : AttackMove
+class TackleMove : AttackMove
 {
-    public VineWhipMove() : base("Vine Whip")
+    public TackleMove() : base("Tackle")
     {
     }
 
     public override void Execute(Pokemon attacker, Pokemon defender)
     {
-        int damage = CalculateDamage(attacker, defender);
+        int damage = attacker.AttackPower;
         defender.ReceiveDamage(damage);
     }
 }

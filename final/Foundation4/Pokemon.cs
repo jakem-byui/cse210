@@ -1,5 +1,3 @@
-using System;
-
 abstract class Pokemon
 {
     private string _name;
@@ -25,18 +23,31 @@ abstract class Pokemon
     public PokemonType Type => _type;
     public bool IsAlive => _health > 0;
 
-    public void TakeTurn(Pokemon opponent)
+    public void TakeTurn(Pokemon opponent, bool isPlayerTurn = true)
     {
-        Console.WriteLine($"1. {_move1.Name}\t2. {_move2.Name}");
-        int moveChoice = Convert.ToInt32(Console.ReadLine());
+        if (isPlayerTurn)
+        {
+            Console.WriteLine($"1. {_move1.Name}\t2. {_move2.Name}");
+            Console.Write("You choose to do (1 or 2)... ");
+            int moveChoice = Convert.ToInt32(Console.ReadLine());
 
-        AttackMove selectedMove = (moveChoice == 1) ? _move1 : _move2;
-        selectedMove.Execute(this, opponent);
+            Thread.Sleep(300);
+            AttackMove selectedMove = (moveChoice == 1) ? _move1 : _move2;
+            Console.WriteLine($"{Name} uses {selectedMove.Name}!");
+            selectedMove.Execute(this, opponent);
+        }
+        else
+        {
+            Thread.Sleep(300);
+            AttackMove selectedMove = GetRandomMove();
+            Console.WriteLine($"{Name} used {selectedMove.Name}!");
+            selectedMove.Execute(this, opponent);
+        }
     }
 
     public virtual void Display()
     {
-        Console.WriteLine($"{_name} (Type: {_type}) - Health: {_health}");
+        Console.WriteLine($"{_name} - Health: {_health}");
     }
 
     public void ReceiveDamage(int damage)
@@ -47,5 +58,12 @@ abstract class Pokemon
 
         Console.WriteLine($"{_name} took {damage} damage!");
         Display();
+    }
+
+    public AttackMove GetRandomMove()
+    {
+        Random random = new Random();
+        int moveChoice = random.Next(1, 3);
+        return (moveChoice == 1) ? _move1 : _move2;
     }
 }

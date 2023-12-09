@@ -1,9 +1,11 @@
 using System;
 
-class ProgramSandbox
+class ProgramFinalTest
 {
     static void Main(string[] args)
     {
+        Console.Clear();
+
         int menuChoice;
 
         Console.WriteLine("Welcome to Pokémon C#!");

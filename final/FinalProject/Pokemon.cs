@@ -1,113 +1,69 @@
-// Base class for Pokemon
-public enum PokemonType
-{
-    Fire,
-    Water,
-    Grass
-}
-
-public class Pokemon
+abstract class Pokemon
 {
     private string _name;
     private int _health;
     private int _attackPower;
-    // List to store Pokemon moves
-    public List<string> _moves;
-
+    private AttackMove _move1;
+    private AttackMove _move2;
     private PokemonType _type;
-    public PokemonType Type => _type;
-    public Pokemon(string name, int health, int attackPower, PokemonType type)
+
+    public Pokemon(string name, int health, int attackPower, AttackMove move1, AttackMove move2, PokemonType type)
     {
         _name = name;
         _health = health;
         _attackPower = attackPower;
+        _move1 = move1;
+        _move2 = move2;
         _type = type;
-        _moves = new List<string> { "Tackle" };
-    }
-
-    // Method to display available moves
-    public void DisplayMoves()
-    {
-        Console.WriteLine("Available moves:");
-        for (int i = 0; i < _moves.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {_moves[i]}");
-        }
     }
 
     public string Name => _name;
     public int Health => _health;
+    public int AttackPower => _attackPower;
+    public PokemonType Type => _type;
+    public bool IsAlive => _health > 0;
 
-    // Method for attacking another Pokemon with a chosen move
-    public void AttackWithMove(Pokemon opponent, int moveIndex)
+    public void TakeTurn(Pokemon opponent, bool isPlayerTurn = true)
     {
-        if (moveIndex >= 0 && moveIndex < _moves.Count)
+        if (isPlayerTurn)
         {
-            string selectedMove = _moves[moveIndex];
-            Console.WriteLine($"{_name} uses {selectedMove} on {opponent.Name}!");
+            Console.WriteLine($"1. {_move1.Name}\t2. {_move2.Name}");
+            Console.Write("You choose to do (1 or 2)... ");
+            int moveChoice = Convert.ToInt32(Console.ReadLine());
 
-            Thread.Sleep(500);
-
-            int damage = CalculateDamage(opponent);
-            opponent.TakeDamage(damage);
-
-            Console.WriteLine($"{opponent.Name} takes {damage} damage. {opponent.Name}'s health: {opponent.Health}");
-
-            Thread.Sleep(500);
+            Thread.Sleep(300);
+            AttackMove selectedMove = (moveChoice == 1) ? _move1 : _move2;
+            Console.WriteLine($"{Name} uses {selectedMove.Name}!");
+            selectedMove.Execute(this, opponent);
         }
         else
         {
-            Console.WriteLine("Invalid move index.");
+            Thread.Sleep(300);
+            AttackMove selectedMove = GetRandomMove();
+            Console.WriteLine($"{Name} used {selectedMove.Name}!");
+            selectedMove.Execute(this, opponent);
         }
     }
 
-        // Method for attacking another Pokemon
-    public virtual void Attack(Pokemon opponent)
+    public virtual void Display()
     {
-        // Default implementation for the base class
-        Console.WriteLine($"{_name} attacks {opponent.Name}!");
-
-        Thread.Sleep(500);
-
-        int damage = CalculateDamage(opponent);
-        opponent.TakeDamage(damage);
-
-        Console.WriteLine($"{opponent.Name} takes {damage} damage. {opponent.Name}'s health: {opponent.Health}");
-
-        Thread.Sleep(500);
+        Console.WriteLine($"{_name} - Health: {_health}");
     }
 
-    // Method for calculating damage with type effectiveness
-    protected virtual int CalculateDamage(Pokemon opponent)
-    {
-        double effectivenessMultiplier = GetTypeEffectivenessMultiplier(opponent.Type);
-        return (int)(_attackPower * effectivenessMultiplier);
-    }
-
-    // Method for determining type effectiveness multiplier
-    private double GetTypeEffectivenessMultiplier(PokemonType opponentType)
-    {
-        // Add type effectiveness logic here
-        switch (_type)
-        {
-            case PokemonType.Fire:
-                return (opponentType == PokemonType.Grass) ? 2.0 : (opponentType == PokemonType.Water) ? 0.5 : 1.0;
-            case PokemonType.Water:
-                return (opponentType == PokemonType.Fire) ? 2.0 : (opponentType == PokemonType.Grass) ? 0.5 : 1.0;
-            case PokemonType.Grass:
-                return (opponentType == PokemonType.Water) ? 2.0 : (opponentType == PokemonType.Fire) ? 0.5 : 1.0;
-            default:
-                return 1.0;
-        }
-    }
-
-    // Method for taking damage
-    public virtual void TakeDamage(int damage)
+    public void ReceiveDamage(int damage)
     {
         _health -= damage;
-        if (_health <= 0)
-        {
-            Console.WriteLine($"{_name} fainted!");
-        }
+        if (_health < 0)
+            _health = 0;
+
+        Console.WriteLine($"{_name} took {damage} damage!");
+        Display();
+    }
+
+    public AttackMove GetRandomMove()
+    {
+        Random random = new Random();
+        int moveChoice = random.Next(1, 3);
+        return (moveChoice == 1) ? _move1 : _move2;
     }
 }
